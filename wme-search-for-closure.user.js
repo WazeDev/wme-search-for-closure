@@ -2,7 +2,7 @@
 // @name         WME Search for Closure
 // @namespace    https://github.com/WazeDev/wme-search-for-closure
 // @version      0.0.2
-// @description  Adds a search icon to find closures for a segment.
+// @description  Adds a search icon/button to find closures on a selected segment using Google Search.
 // @author       Gavin Canon-Phratsachack (https://github.com/gncnpk)
 // @match        https://beta.waze.com/*editor*
 // @match        https://www.waze.com/*editor*
