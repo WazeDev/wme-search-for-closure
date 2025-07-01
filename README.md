@@ -1,2 +1,2 @@
 # wme-search-for-closure
-Adds a search icon to find closures for a segment.
+Adds a search icon/button to find closures on a selected segment using Google Search.
