@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         WME Search for Closure
 // @namespace    https://github.com/WazeDev/wme-search-for-closure
-// @version      0.0.1
-// @description  Adds a search icon to find closures for a segment.
+// @version      0.0.2
+// @description  Opens a new tab with a Google Search based on the selected segment.
 // @author       Gavin Canon-Phratsachack (https://github.com/gncnpk)
 // @match        https://beta.waze.com/*editor*
 // @match        https://www.waze.com/*editor*
@@ -21,6 +21,16 @@
     let selectedSegments;
     let selectionHeader;
     let link;
+    let searchIconCreated = false;
+
+    function delay(time = 1000) {
+  if (time <= 0) {
+    return Promise.resolve(); // No delay needed
+  }
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time);
+  });
+}
 
     function waitForElm(selector, doc) {
         return new Promise(resolve => {
@@ -59,9 +69,6 @@
             eventName: "wme-selection-changed",
             eventHandler: onSelection
         });
-        waitForElm('.segment-feature-editor > .segment > wz-section-header', document).then((elm) => {
-            createSearchIcon();
-        });
         console.log("WME Search for Closure: Initialized!");
     }
     async function createSearchIcon() {
@@ -88,16 +95,16 @@
         });
     }
 
-    function onSelection() {
+    async function onSelection() {
         const sel = sdk.Editing.getSelection();
         // nothing selected?
         if (!sel) return;
 
-        // link not yet created?  wait 100ms and try again
-        if (!link) {
-            setTimeout(onSelection, 100);
-            return;
-        }
+        await waitForElm('.segment-feature-editor > .segment > wz-section-header', document).then(async (elm) => {
+            await delay(500);
+            createSearchIcon();
+        });
+
         if (sel.ids.length !== 0 && sel.objectType === "segment") {
             let segId = sel.ids[0];
             const segment = sdk.DataModel.Segments.getById({
